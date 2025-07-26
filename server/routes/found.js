@@ -167,6 +167,153 @@ router.get('/', auth, async (req, res) => {
 // const User = require('../models/User');
 // const auth = require('../middleware/auth');
 
+// router.post('/report', auth, upload.single('photo'), async (req, res) => {
+//   console.log('Request received:', req.body);
+//   console.log('File received:', req.file);
+
+//   const { name, location, approximateAge, appearance, contact, height, reportedByParentId } = req.body;
+//   try {
+//     if (!req.file) {
+//       return res.status(400).json({ message: 'No photo uploaded' });
+//     }
+
+//     const img = await loadImage(req.file.path);
+//     console.log('Image loaded successfully');
+//     const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+//     if (!detections) {
+//       return res.status(400).json({ message: 'No face detected' });
+//     }
+//     console.log('Face detected, descriptor length:', detections.descriptor.length);
+
+//     const foundChild = new FoundChild({
+//       finderId: req.user.id,
+//       name: name.replace(/"/g, ''),
+//       location: location.replace(/"/g, ''),
+//       photo: req.file.path,
+//       approximateAge: parseInt(approximateAge),
+//       height: height ? height.replace(/"/g, '') : null,
+//       appearance: appearance ? appearance.replace(/"/g, '') : null,
+//       contact: contact.replace(/"/g, ''),
+//       facialDescriptor: Array.from(detections.descriptor),
+//       reportedByParentId: reportedByParentId || null
+//     });
+//     await foundChild.save();
+//     console.log('Found child saved to database');
+
+//     // Matching logic
+//     const lostChildren = await LostChild.find();
+//     console.log('Checking matches with', lostChildren.length, 'lost children');
+//     for (const lost of lostChildren) {
+//       const distance = faceapi.euclideanDistance(detections.descriptor, lost.facialDescriptor);
+//       console.log(`Distance with lost child ${lost._id}: ${distance}`);
+//       if (distance < 0.6 && Math.abs(lost.age - parseInt(approximateAge)) <= 2) {
+//         const parent = await User.findById(lost.userId);
+//         const finder = await User.findById(foundChild.finderId);
+//         if (parent && finder) {
+//           try {
+//             await sendNotification(parent.email, `Match found! Contact: ${finder.phone}, Location: ${foundChild.location}`);
+//             await sendNotification(finder.email, `Match found! Contact: ${parent.phone}`);
+//             console.log('Match found and notifications sent');
+//           } catch (notifyErr) {
+//             console.error('Notification error:', notifyErr.message);
+//           }
+//         } else {
+//           console.log('Failed to find parent or finder user');
+//         }
+//       }
+//     }
+
+//     res.status(201).json({ message: 'Found report submitted', child: foundChild });
+//   } catch (err) {
+//     console.error('Server error details:', err);
+//     res.status(500).json({ message: 'Server error', error: err.message });
+//   }
+// });
+
+
+
+
+
+
+
+
+// router.post('/report', auth, upload.single('photo'), async (req, res) => {
+//   console.log('Request received:', req.body);
+//   console.log('File received:', req.file);
+
+//   const { name, location, approximateAge, appearance, contact, height, reportedByParentId } = req.body;
+//   try {
+//     if (!req.file) {
+//       return res.status(400).json({ message: 'No photo uploaded' });
+//     }
+
+//     const img = await loadImage(req.file.path);
+//     console.log('Image loaded successfully');
+//     const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+//     if (!detections) {
+//       return res.status(400).json({ message: 'No face detected' });
+//     }
+//     console.log('Face detected, descriptor length:', detections.descriptor.length);
+
+//     const foundChild = new FoundChild({
+//       finderId: req.user.id,
+//       name: name.replace(/"/g, ''),
+//       location: location.replace(/"/g, ''),
+//       photo: req.file.path,
+//       approximateAge: parseInt(approximateAge),
+//       height: height ? height.replace(/"/g, '') : null,
+//       appearance: appearance ? appearance.replace(/"/g, '') : null,
+//       contact: contact.replace(/"/g, ''),
+//       facialDescriptor: Array.from(detections.descriptor),
+//       reportedByParentId: reportedByParentId || null,
+//       isFound: false,
+//     });
+//     await foundChild.save();
+//     console.log('Found child saved to database with ID:', foundChild._id);
+
+//     // Optimized matching logic (last 24 hours)
+//     const lostChildren = await LostChild.find({
+//       createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+//     });
+//     console.log('Checking matches with', lostChildren.length, 'recent lost children');
+//     let matchFound = false;
+//     for (const lost of lostChildren) {
+//       const distance = faceapi.euclideanDistance(detections.descriptor, lost.facialDescriptor);
+//       console.log(`Distance with lost child ${lost._id}: Distance = ${distance}, Lost Age = ${lost.age}, Found Age = ${parseInt(approximateAge)}`);
+//       if (distance < 0.6 && Math.abs(lost.age - parseInt(approximateAge)) <= 2) {
+//         console.log(`Match condition met for lost child ${lost._id}`);
+//         const parent = await User.findById(lost.userId);
+//         const finder = await User.findById(foundChild.finderId);
+//         if (parent && finder) {
+//           // Update isFound immediately on match
+//           await FoundChild.findByIdAndUpdate(foundChild._id, { isFound: true });
+//           try {
+//             await sendNotification(parent.email, `Match found! Contact: ${finder.phone}, Location: ${foundChild.location}`);
+//             await sendNotification(finder.email, `Match found! Contact: ${parent.phone}`);
+//             console.log(`Notifications sent for match with ${lost._id}`);
+//           } catch (notifyErr) {
+//             console.error(`Notification error for match with ${lost._id}:`, notifyErr.message);
+//           }
+//         } else {
+//           console.log(`Failed to find parent or finder user for match with ${lost._id}`);
+//         }
+//         matchFound = true;
+//       }
+//     }
+
+//     res.status(201).json({
+//       message: `Found report submitted${matchFound ? ', match found and processed' : ''}`,
+//       child: foundChild,
+//     });
+//   } catch (err) {
+//     console.error('Server error details:', err);
+//     res.status(500).json({ message: 'Server error', error: err.message });
+//   }
+// });
+
+
+
+
 router.post('/report', auth, upload.single('photo'), async (req, res) => {
   console.log('Request received:', req.body);
   console.log('File received:', req.file);
@@ -195,39 +342,62 @@ router.post('/report', auth, upload.single('photo'), async (req, res) => {
       appearance: appearance ? appearance.replace(/"/g, '') : null,
       contact: contact.replace(/"/g, ''),
       facialDescriptor: Array.from(detections.descriptor),
-      reportedByParentId: reportedByParentId || null
+      reportedByParentId: reportedByParentId || null,
+      isFound: false,
     });
     await foundChild.save();
-    console.log('Found child saved to database');
+    console.log('Found child saved to database with ID:', foundChild._id);
 
-    // Matching logic
-    const lostChildren = await LostChild.find();
-    console.log('Checking matches with', lostChildren.length, 'lost children');
+    const lostChildren = await LostChild.find({
+      createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+    });
+    console.log('Checking matches with', lostChildren.length, 'recent lost children');
+    let matchFound = false;
     for (const lost of lostChildren) {
       const distance = faceapi.euclideanDistance(detections.descriptor, lost.facialDescriptor);
-      console.log(`Distance with lost child ${lost._id}: ${distance}`);
+      console.log(`Distance with lost child ${lost._id}: Distance = ${distance}, Lost Age = ${lost.age}, Found Age = ${parseInt(approximateAge)}`);
       if (distance < 0.6 && Math.abs(lost.age - parseInt(approximateAge)) <= 2) {
+        console.log(`Match condition met for lost child ${lost._id}`);
         const parent = await User.findById(lost.userId);
         const finder = await User.findById(foundChild.finderId);
         if (parent && finder) {
+          // Update both FoundChild and LostChild
+          await FoundChild.findByIdAndUpdate(foundChild._id, { isFound: true });
+          await LostChild.findByIdAndUpdate(lost._id, {
+            isFound: true,
+            finder: {
+              finderId: foundChild.finderId,
+              name: finder.name,
+              phone: finder.phone
+            },
+            submittedByFinder: true
+          });
+          console.log(`isFound updated to true for foundChild ${foundChild._id} and lostChild ${lost._id}`);
           try {
             await sendNotification(parent.email, `Match found! Contact: ${finder.phone}, Location: ${foundChild.location}`);
             await sendNotification(finder.email, `Match found! Contact: ${parent.phone}`);
-            console.log('Match found and notifications sent');
+            console.log(`Notifications sent for match with ${lost._id}`);
           } catch (notifyErr) {
-            console.error('Notification error:', notifyErr.message);
+            console.error(`Notification error for match with ${lost._id}:`, notifyErr.message);
           }
+          matchFound = true;
         } else {
-          console.log('Failed to find parent or finder user');
+          console.log(`Failed to find parent or finder user for match with ${lost._id}`);
         }
       }
     }
 
-    res.status(201).json({ message: 'Found report submitted', child: foundChild });
+    res.status(201).json({
+      message: `Found report submitted${matchFound ? ', match found and processed' : ''}`,
+      child: foundChild,
+    });
   } catch (err) {
     console.error('Server error details:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
+
+
 
 module.exports = router;
