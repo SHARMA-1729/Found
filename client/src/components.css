@@ -45,7 +45,7 @@
   background-color: #555;
 }
 
-.dashboard {
+/* .dashboard {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -65,4 +65,35 @@
 }
 .found-status h2 {
   text-align: center;
+} */
+
+
+.dashboard {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.dashboard h2 {
+  text-align: center;
+}
+
+.dashboard div {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.dashboard img {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
+}
+
+.dashboard h3 {
+  margin: 0.5rem 0;
+}
+
+.dashboard p {
+  margin: 0.25rem 0;
 }
