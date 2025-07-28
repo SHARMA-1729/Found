@@ -8,10 +8,12 @@ import DashboardPage from './pages/DashboardPage';
 import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './components/Profile'; // Confirm this import
+import './App.css';
 
 function App() {
   return (
     <Router>
+      <div className='body'>
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
@@ -23,6 +25,7 @@ function App() {
         <Route path="/profile" element={<Profile />} /> {/* Confirm this line */}
         {/* <Route path="/found-status" component={FoundStatus} /> */}
       </Routes>
+      </div>
     </Router>
   );
 }

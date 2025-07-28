@@ -27,13 +27,16 @@ function Profile() {
   if (!user) return <p>Loading...</p>;
 
   return (
-    <div className="form-container">
-      <h2>Profile</h2>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Name:</strong> {user.name}</p>
-      <p><strong>Phone:</strong> {user.phone}</p>
-      <p><strong>Role:</strong> {user.role === 'parent' ? 'Parent' : 'Finder'}</p>
-    </div>
+   <div className="form-containerr">
+  <h2>Profile</h2>
+  <div className="profile-details">
+    <p><strong>Email:</strong> {user.email}</p>
+    <p><strong>Name:</strong> {user.name}</p>
+    <p><strong>Phone:</strong> {user.phone}</p>
+    <p><strong>Role:</strong> {user.role === 'parent' ? 'Parent' : 'Finder'}</p>
+  </div>
+</div>
+
   );
 }
 

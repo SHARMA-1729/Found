@@ -1,0 +1,210 @@
+.home{
+  background-color: #D6E5E8;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 20px;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+   color: #002846;           
+  font-weight: bold;
+}
+
+/* Text Styling */
+.tex {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers horizontally */
+  justify-content: center;
+  text-align: center;
+ 
+  
+}
+.tex h1 {
+  font-size: 2rem;
+  max-width: 500px;
+  
+}
+
+.report-btn {
+  background-color: #FFD53D; /* Yellow background */
+  color: #0A2342; /* Dark blue text */
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px; /* Rounded corners */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+   text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.report-btn:hover {
+  background-color: #fbc531; /* Slightly darker yellow */
+  transform: translateY(-2px); /* Lift effect */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Active (Click) Effect */
+.report-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Image Styling */
+.hero img {
+  max-width: 600px;
+  width: 100%;
+  height: 400px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .box {
+    flex-direction: column; /* Stack text and image */
+    text-align: center;
+  }
+
+  .tex h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero img {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .tex h1 {
+    font-size: 1.5rem;
+    padding: 0 10px;
+  }
+
+  .hero img {
+    max-width: 250px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.how-it-works {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.how-it-works h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+   color: #002846;           
+  font-weight: bold;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap; /* ✅ Makes it responsive */
+}
+
+
+/* 🔵 Circle Background for Icons */
+.step-icon {
+  width: 80px;
+  height: 80px;
+  background: #E6F2F6; /* light blue background */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px auto;
+}
+
+.step {
+  flex: 1 1 200px;
+  max-width: 250px;
+}
+
+.step img {
+  width: 60px;
+  margin-bottom: 10px;
+}
+
+.step h3 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+   color: #002846;           
+  font-weight: bold;
+}
+
+.step p {
+  font-size: 0.9rem;
+  color: #555;
+   color: #002846;           
+ 
+}
+
+/* ✅ Safety Card */
+.safety-card {
+  display: flex;
+  align-items: center;
+  background: #D6E5E8;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 30px auto 0;
+  gap: 15px;
+}
+
+.safety-icon {
+  width: 60px;
+  height: 60px;
+  background: #E6F2F6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.safety-card img {
+  width: 50px;
+}
+
+.safety-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+   color: #002846;           
+  font-weight: bold;
+}
+
+.safety-card p {
+  font-size: 0.95rem;
+ color: #002846;  
+}
+
+/* ✅ RESPONSIVENESS */
+@media (max-width: 768px) {
+  .steps {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .safety-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
